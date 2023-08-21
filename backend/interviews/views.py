@@ -11,12 +11,23 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.permissions import IsAuthenticated
 
 
+# INTERVIEW VIEWS
+# get all interviews
 @api_view(['GET'])
 def getInterviews(request):
     interviews = Interview.objects.all()
     serializer = InterviewSerializer(interviews, many=True)
     return DRFResponse(serializer.data)
 
+# get single interview
+@api_view(['GET'])
+def getInterview(request, pk):
+    interview = Interview.objects.get(id=pk)
+    serializer = InterviewSerializer(interview)
+    return DRFResponse(serializer.data)
+
+
+# create interview
 @permission_classes([IsAuthenticated])
 @api_view(['POST'])
 def createInterview(request):
@@ -55,5 +66,41 @@ def createInterview(request):
         interview.tags.add(tag)
 
     serializer = InterviewSerializer(interview)
+
+    return DRFResponse(serializer.data, status=status.HTTP_201_CREATED)
+
+
+# RESPONSE VIEWS
+# get all responses
+@api_view(['GET'])
+def getResponses(request):
+    responses = Response.objects.all()
+    serializer = ResponseSerializer(responses, many=True)
+    return DRFResponse(serializer.data)
+
+
+# get all responses for an interview
+@api_view(['GET'])
+def getResponsesForInterview(request, pk):
+    responses = Response.objects.filter(interview=pk)
+    serializer = ResponseSerializer(responses, many=True)
+    return DRFResponse(serializer.data)
+
+
+# create response for a single question in an interview
+@permission_classes([IsAuthenticated])
+@api_view(['POST'])
+def createResponse(request):
+    data = request.data
+    interview = Interview.objects.get(id=data.get('interview'))
+    question = Question.objects.get(id=data.get('question'))
+
+    response = Response.objects.create(
+        interview=interview,
+        question=question,
+        answer=data.get('answer')
+    )
+
+    serializer = ResponseSerializer(response)
 
     return DRFResponse(serializer.data, status=status.HTTP_201_CREATED)
