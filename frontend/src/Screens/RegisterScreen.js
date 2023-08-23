@@ -17,7 +17,7 @@ function RegisterScreen() {
 
     useEffect(() => {
         if (userInfo) {
-            navigate('/')
+            navigate('/interviews')
         }
     }, [navigate, userInfo])
 
@@ -27,7 +27,7 @@ function RegisterScreen() {
             alert('Passwords do not match')
         } else {
             dispatch(register(username, email, first_name, last_name, password))
-            navigate('/')
+            navigate('/interviews')
         }
     }
 

@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { logout } from '../actions/userActions'
 import { useSelector, useDispatch } from 'react-redux'
 import logo from '../images/logo.png'
@@ -8,6 +8,7 @@ function Header() {
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const logoutHandler = () => {
         dispatch(logout())
@@ -36,7 +37,7 @@ function Header() {
                         <li>
                             <details>
                             <summary>
-                                Welcome, {userInfo.first_name}
+                                Welcome, {userInfo.first_name}!
                             </summary>
                             <ul className="p-2 bg-base-200">
                                 <li><a>Settings</a></li>

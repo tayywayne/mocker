@@ -1,8 +1,20 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import home1 from '../images/home1.png'
 import "./styles/HomeScreen.css"
+import { useSelector } from 'react-redux';
+import { Link, useNavigate, } from 'react-router-dom'
 
 function HomeScreen() {
+    const navigate = useNavigate()
+    const userLogin = useSelector(state => state.userLogin)
+    const { loading, error, userInfo } = userLogin
+
+    useEffect(() => {
+        if (userInfo) {
+            navigate("/interviews")
+        }
+    }, [navigate, userInfo])
+
     return (
     <>
         <div className="hero px-10 py-40">

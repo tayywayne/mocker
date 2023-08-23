@@ -15,7 +15,7 @@ function LoginScreen() {
 
     useEffect(() => {
         if (userInfo) {
-            navigate()
+            navigate("/interviews")
         }
     }, [navigate, userInfo])
 
